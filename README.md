@@ -228,7 +228,7 @@ Theme Config: tailwind.config.js
 
 Backend Deployment Link: 
 ```
-https://ai-fitness-coach-app-rho.vercel.app/api
+https://ai-fitness-coach-app-fjj9.onrender.com
 ```
 
 1.Hero Section:
