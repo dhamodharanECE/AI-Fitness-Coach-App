@@ -1,70 +1,283 @@
-# Getting Started with Create React App
+# 🏋️‍♂️ AI Fitness Coach
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An AI-powered web application that generates fully personalized workout routines and diet plans based on user goals, body 
 
-## Available Scripts
+type, and dietary preferences. Powered by **Google Gemini AI** for intelligence and **Pollinations.ai** for visual generation.
 
-In the project directory, you can run:
+# 🚀 Features
 
-### `npm start`
+- **Personalized Plans:** Generates 7-day workout and diet schedules using LLMs.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **AI Visuals:** Generates realistic images for exercises and meals on the fly.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Voice Assistant:** Reads out the workout plan using the Web Speech API.
 
-### `npm test`
+- **PDF Export:** Download professional, multi-page PDF plans.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Modern UI:** Built with React, Tailwind CSS, and Framer Motion animations.
 
-### `npm run build`
+# 🛠️ Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Frontend:** React (Vite), Tailwind CSS, Framer Motion, Axios, jsPDF.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Backend:** Node.js, Express.js, Google Gemini API.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **External APIs:** Google Gemini (Text), Pollinations.ai (Images).
 
-### `npm run eject`
+# 📂 Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+/ai-fitness-coach
+├── /backend         # Node.js Server & API Logic
+└── /frontend   
+```
+# ⚡ Quick Start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You need to run the Backend and Frontend in two separate terminals.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Terminal 1: Backend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+code
+Bash
+```
+cd backend
+```
+```
+npm install
+```
+# Setup your .env file (see backend/README.md)
+```
+node server.js
+```
+Terminal 2: Frontend
 
-## Learn More
+code
+Bash
+```
+cd frontend
+```
+```
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+```
+npm run dev
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Backend README
 
-### Code Splitting
+File Location: backend/README.md
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+code
+Markdown
 
-### Analyzing the Bundle Size
+# 🧠 AI Fitness Coach - Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This is the server-side application for the AI Fitness Coach. It handles communication with the Google Gemini API to generate 
 
-### Making a Progressive Web App
+JSON-structured fitness data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+# ⚙️ Setup & Installation
 
-### Advanced Configuration
+1. **Navigate to the directory:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+   cd backend
+```
+Install dependencies:
 
-### Deployment
+code
+Bash
+```
+npm install express cors dotenv @google/generative-ai
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Configure Environment Variables:
 
-### `npm run build` fails to minify
+Create a file named .env in the backend folder and add your API Key:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+code
+Env
+```
+PORT=5000
+```
+# Get this key from 
+```
+https://aistudio.google.com/
+```
+```
+GOOGLE_API_KEY=AIzaSyD_Your_Actual_Key_Here
+```
+
+Run the Server:
+
+code
+Bash
+```
+node server.js
+```
+
+You should see: Backend running on port 5000
+
+# 📡 API Endpoints
+
+# 1. Generate Plan
+
+POST /api/generate-plan
+
+Body: { name, age, weight, goal, level, location, dietary }
+
+Response: JSON object containing weekly_workout, weekly_diet, motivation, and tips.
+
+# 2. Generate Image
+```
+POST /api/generate-image
+Body: { prompt: "Squats" }
+Response: { imageUrl: "https://..." }
+```
+# AI Image Generation:
+
+Note: Uses Pollinations.ai fallback.
+
+# 🐛 Troubleshooting:
+
+404 Not Found (Gemini):
+
+Ensure you are using gemini-pro in server.js if gemini-1.5-flash is not available in your region.
+
+CORS Errors:
+
+Ensure cors is enabled in server.js for 
+```
+http://localhost:3000 (or 5173 depending on your Vite port).
+```
+
+# 3. Frontend README
+
+**File Location:** `frontend/README.md`
+
+# 🎨 AI Fitness Coach - Frontend
+
+The user interface for the fitness application. Built with **Vite + React** for speed and performance.
+
+# 📦 Setup & Installation
+
+1. **Navigate to the directory:**
+
+```
+cd frontend
+```
+
+Install dependencies:
+
+code
+Bash
+```
+npm install axios framer-motion lucide-react jspdf
+```
+(If you encounter version errors with Framer Motion, run:
+```
+npm install framer-motion@latest react@latest)
+```
+Run the Development Server:
+
+code
+Bash
+```
+npm run dev
+```
+Open the link shown (usually 
+
+```
+http://localhost:5173 
+``` 
+or 3000) in your browser.
+
+# 🔧 Configuration:
+
+If your backend is running on a port other than 5000, update the API URL:
+```
+File: src/api/api.js
+```
+
+code
+JavaScript
+```
+const API_BASE = "http://localhost:5000/api";
+```
+
+# 🌟 Key Features Implementation:
+
+PDF Export: Uses jsPDF to render text and add automatic page breaks.
+
+Voice: Uses window.speechSynthesis (Browser Native) to avoid API costs.
+
+Animations: Uses framer-motion for page transitions (AnimatePresence).
+
+Images: Fetches directly from Pollinations.ai using <img> tags to reduce backend load.
+
+# 🖌️ Styling
+
+Styles are handled via Tailwind CSS.
+
+Main CSS: src/index.css
+
+Theme Config: tailwind.config.js
+
+# Image Overview:
+
+1.Hero Section:
+```
+![alt text](image.png)
+```
+2.Personal details:
+```
+![alt text](image-1.png)
+```
+3.AI Generating:
+```
+![alt text](image-2.png)
+```
+4.Every Day Helath feature:
+```
+![alt text](image-3.png)
+```
+5.Image Grid Section:
+```
+![alt text](image-4.png)
+```
+6.Diat Maintance:
+```
+![alt text](image-5.png)
+```
+7.Image Grid Section:
+```
+![alt text](image-6.png)
+```
+8.Health deatils PDF:
+```
+![alt text](image-7.png)
+```
+9.PDF Overview:
+```
+![alt text](image-8.png);
+```
+10.Audio Play List:
+```
+![alt text](image-9.png)
+```
+# Help:
+
+GitHub Project Link:
+```
+https://github.com/dhamodharanECE/AI-Fitness-Coach-App.git
+```
+
+GitHub Link:
+```
+https://github.com/dhamodharanECE
+```
+Email Id:
+```
+dhamodharansece23@gmail.com
+```
