@@ -227,45 +227,45 @@ Theme Config: tailwind.config.js
 # Image Overview:
 
 1.Hero Section:
-```
+
 ![alt text](image.png)
-```
+
 2.Personal details:
-```
+
 ![alt text](image-1.png)
-```
+
 3.AI Generating:
-```
+
 ![alt text](image-2.png)
-```
+
 4.Every Day Helath feature:
-```
+
 ![alt text](image-3.png)
-```
+
 5.Image Grid Section:
-```
+
 ![alt text](image-4.png)
-```
+
 6.Diat Maintance:
-```
+
 ![alt text](image-5.png)
-```
+
 7.Image Grid Section:
-```
+
 ![alt text](image-6.png)
-```
+
 8.Health deatils PDF:
-```
+
 ![alt text](image-7.png)
-```
+
 9.PDF Overview:
-```
+
 ![alt text](image-8.png);
-```
+
 10.Audio Play List:
-```
+
 ![alt text](image-9.png)
-```
+
 # Help:
 
 GitHub Project Link:
