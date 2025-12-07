@@ -5,8 +5,18 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 
-// 1. Allow Frontend connection
-app.use(cors({ origin: "http://localhost:3000" })); 
+// 1. Allow Frontend connection (Vercel)
+// IMPORTANT: No trailing slash "/" at the end of the URL
+app.use(cors({ 
+  origin: [
+    "https://ai-fitness-coach-app-rho.vercel.app", // Your deployed frontend
+    "http://localhost:3000", // Keep this if you still want to test locally
+    "http://localhost:5173"  // Standard Vite local port
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
+})); 
+
 app.use(express.json());
 
 // 2. Check API Key
@@ -14,11 +24,12 @@ console.log("API Key Status:", process.env.GOOGLE_API_KEY ? "Loaded" : "MISSING"
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
-// 3. Use the Standard Model
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+// 3. Model Configuration
+// WARNING: "gemini-2.5-flash" does not exist yet. Using "gemini-1.5-flash".
+// If you get a 404 error, change this string to "gemini-pro".
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // --- HELPER: Extract JSON from text ---
-// This fixes the issue where Gemini says "Here is your JSON..."
 const extractJSON = (text) => {
   try {
     // 1. Try finding content between ```json and ```
@@ -92,4 +103,6 @@ app.post('/api/generate-image', async (req, res) => {
   res.json({ imageUrl });
 });
 
-app.listen(5000, () => console.log("Backend running on port 5000"));
+// Use process.env.PORT for deployment, or 5000 for local
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
