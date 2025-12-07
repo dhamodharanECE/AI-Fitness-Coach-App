@@ -9,7 +9,7 @@ const app = express();
 // IMPORTANT: No trailing slash "/" at the end of the URL
 app.use(cors({ 
   origin: [
-    "https://ai-fitness-coach-app-rho.vercel.app", // Your deployed frontend
+    "https://ai-fitness-coach-app-fjj9.onrender.com", // Your deployed frontend
     "http://localhost:3000", // Keep this if you still want to test locally
     "http://localhost:5173"  // Standard Vite local port
   ],

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = "https://ai-fitness-coach-app-rho.vercel.app/api";
+const API_BASE = "https://ai-fitness-coach-app-fjj9.onrender.com/api";
 
 export const generatePlan = async (userData) => {
   const response = await axios.post(`${API_BASE}/generate-plan`, userData);
