@@ -81,8 +81,8 @@ JSON-structured fitness data.
 
 1. **Navigate to the directory:**
 
-```bash
-   cd backend
+```
+cd backend
 ```
 Install dependencies:
 
@@ -265,7 +265,8 @@ Theme Config: tailwind.config.js
 10.Audio Play List:
 
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/558a5bca-65ad-451a-9948-c2409390b552" />
-# Help:
+
+# 🚀 Help:
 
 GitHub Project Link:
 ```
