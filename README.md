@@ -228,43 +228,43 @@ Theme Config: tailwind.config.js
 
 1.Hero Section:
 
-![alt text](image.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/400b8341-51a9-47fe-8b75-a02ffd1b49c4" />
 
 2.Personal details:
 
-![alt text](image-1.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/7bb30ab8-3fce-4d7e-9560-df7ba4b7bc0f" />
 
 3.AI Generating:
 
-![alt text](image-2.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/ed2823ca-6ab6-43f1-9d59-d2f178429ba2" />
 
 4.Every Day Helath feature:
 
-![alt text](image-3.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/3e407c2d-e58b-4a85-823b-3750f0e0150f" />
 
 5.Image Grid Section:
 
-![alt text](image-4.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/282daa5b-43ca-4e4e-be2a-3045dba2d30b" />
 
 6.Diat Maintance:
 
-![alt text](image-5.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/7c3e138b-67e1-44ec-a7c8-fa973f7ad070" />
 
 7.Image Grid Section:
 
-![alt text](image-6.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/97e8fdc7-0335-4e8f-8e47-17c0f572a4f6" />
 
 8.Health deatils PDF:
 
-![alt text](image-7.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/e4b242ae-a0a6-4a86-a13a-19781a64f8e9" />
 
 9.PDF Overview:
 
-![alt text](image-8.png);
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/7271836f-8731-4912-a700-3b4dfeea2e95" />
 
 10.Audio Play List:
 
-![alt text](image-9.png)
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/558a5bca-65ad-451a-9948-c2409390b552" />
 
 # Help:
 
