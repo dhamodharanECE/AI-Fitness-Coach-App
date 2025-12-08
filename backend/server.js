@@ -9,9 +9,7 @@ const app = express();
 // IMPORTANT: No trailing slash "/" at the end of the URL
 app.use(cors({ 
   origin: [
-    "https://ai-fitness-coach-app-fjj9.onrender.com", // Your deployed frontend
-    "http://localhost:3000", // Keep this if you still want to test locally
-    "http://localhost:5173"  // Standard Vite local port
+     "https://ai-fitness-coach-app-frontend.vercel.app"
   ],
   methods: ["GET", "POST"],
   credentials: true
@@ -27,7 +25,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 // 3. Model Configuration
 // WARNING: "gemini-2.5-flash" does not exist yet. Using "gemini-1.5-flash".
 // If you get a 404 error, change this string to "gemini-pro".
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 // --- HELPER: Extract JSON from text ---
 const extractJSON = (text) => {

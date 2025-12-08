@@ -226,6 +226,11 @@ Theme Config: tailwind.config.js
 
 # Image Overview:
 
+Backend Deployment Link: 
+```
+https://ai-fitness-coach-app-fjj9.onrender.com
+```
+
 1.Hero Section:
 
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/400b8341-51a9-47fe-8b75-a02ffd1b49c4" />
