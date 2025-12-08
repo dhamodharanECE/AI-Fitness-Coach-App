@@ -81,7 +81,7 @@ app.post('/api/generate-plan', async (req, res) => {
     console.log("Gemini responded. extracting JSON...");
     
     const plan = extractJSON(text);
-
+    console.log(text);
     if (!plan) {
       throw new Error("Could not parse JSON from AI response");
     }
