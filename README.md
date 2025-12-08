@@ -27,9 +27,24 @@ type, and dietary preferences. Powered by **Google Gemini AI** for intelligence 
 # 📂 Project Structure
 
 ```
-/ai-fitness-coach
-├── /backend         # Node.js Server & API Logic
-└── /frontend   
+/AI-Fitness-Coach-App
+├── /backend
+        └── /server.js
+        └── /.env 
+└── /frontend
+         └── /src
+         |     └── /components
+         |              └── /Hero.jsx
+         |              └── /PlainViewer.jsx     
+         |               └── /UserForm.jsx
+         └── /App.jsx
+         └── /App.css
+         └── /Index.js
+         └── /Index.css
+         └── /pakage.json
+         └── /pakage-lock-json
+         └── /redme.md
+  
 ```
 # ⚡ Quick Start
 
