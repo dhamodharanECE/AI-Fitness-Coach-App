@@ -9,6 +9,7 @@ const app = express();
 app.use(cors({ 
   origin: [
     "https://project-om6h9pz9j-dhamodharan-ss-projects.vercel.app",
+    "https://ai-fitness-coach-app-frontend.vercel.app",
   ],
   methods: ["GET", "POST"],
   credentials: true
