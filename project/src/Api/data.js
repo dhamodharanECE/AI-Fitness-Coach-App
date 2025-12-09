@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'https://ai-fitness-coach-app-backends.onrender.com/api';
+const API_BASE = 'https://ai-fitness-coach-app-backendd.onrender.com/api';
 
 export const generatePlan = async (userData) => {
   const response = await axios.post(`${API_BASE}/generate-plan`, userData);

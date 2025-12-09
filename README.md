@@ -295,7 +295,7 @@ https://ai-fitness-coach-app-frontend.vercel.app/
 
 Backend Deployment Link: 
 ```
-https://ai-fitness-coach-app-backend.onrender.com
+https://ai-fitness-coach-app-backends.onrender.com
 ```
 
 GitHub Project Link:
