@@ -1,15 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 
 const app = express();
 
-// 1. Allow Frontend connection (Vercel)
-// IMPORTANT: No trailing slash "/" at the end of the URL
+// 1. CORS Configuration
 app.use(cors({ 
   origin: [
-     "https://ai-fitness-coach-app-frontend.vercel.app"
+    "https://ai-fitness-coach-app-frontend.vercel.app",
+    "http://localhost:3000",
   ],
   methods: ["GET", "POST"],
   credentials: true
@@ -17,90 +17,95 @@ app.use(cors({
 
 app.use(express.json());
 
-// 2. Check API Key
-console.log("API Key Status:", process.env.GOOGLE_API_KEY ? "Loaded" : "MISSING");
-
+// 2. Initialize Gemini with JSON Mode and Safety Settings
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
-// 3. Model Configuration
-// WARNING: "gemini-2.5-flash" does not exist yet. Using "gemini-1.5-flash".
-// If you get a 404 error, change this string to "gemini-pro".
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-// --- HELPER: Extract JSON from text ---
-const extractJSON = (text) => {
-  try {
-    // 1. Try finding content between ```json and ```
-    const match = text.match(/```json([\s\S]*?)```/);
-    if (match && match[1]) return JSON.parse(match[1]);
-
-    // 2. Try finding the first '{' and last '}'
-    const jsonStart = text.indexOf('{');
-    const jsonEnd = text.lastIndexOf('}');
-    if (jsonStart !== -1 && jsonEnd !== -1) {
-      const cleanJson = text.substring(jsonStart, jsonEnd + 1);
-      return JSON.parse(cleanJson);
+const model = genAI.getGenerativeModel({ 
+  model: "gemini-2.5-flash",
+  // IMPORTANT: This forces the AI to return ONLY valid JSON, no Regex needed
+  generationConfig: { 
+    responseMimeType: "application/json" 
+  },
+  // IMPORTANT: This prevents the AI from blocking fitness advice erroneously
+  safetySettings: [
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_NONE,
     }
-    
-    // 3. Last resort: Try parsing the whole text
-    return JSON.parse(text);
-  } catch (error) {
-    console.error("JSON Parse Error:", error);
-    return null;
-  }
-};
+  ]
+});
 
 // --- ROUTE: Generate Plan ---
 app.post('/api/generate-plan', async (req, res) => {
   const { name, goal, level, dietary } = req.body;
   
-  console.log(`Generating plan for: ${name}...`);
+  console.log(`Generating plan for: ${name} (${goal})...`);
 
+  // Optimized prompt for JSON mode
   const prompt = `
-    Act as a fitness API. Return ONLY raw JSON. No introductory text.
+    Generate a fitness and diet plan for:
     User: ${name}, Goal: ${goal}, Level: ${level}, Diet: ${dietary}.
     
-    Required JSON Structure:
+    Return a JSON object with this specific schema:
     {
-      "motivation": "A short quote",
-      "tips": ["Tip 1", "Tip 2"],
+      "motivation": "string",
+      "tips": ["string", "string"],
       "weekly_workout": [
-        { "day": "Day 1", "exercises": [{ "name": "Pushups", "sets": "3", "reps": "12", "rest": "60s" }] }
+        { "day": "string", "exercises": [{ "name": "string", "sets": "string", "reps": "string", "rest": "string" }] }
       ],
       "weekly_diet": [
-        { "day": "Day 1", "meals": { "breakfast": "Oats", "lunch": "Rice", "dinner": "Salad", "snacks": "Nuts" } }
+        { "day": "string", "meals": { "breakfast": "string", "lunch": "string", "dinner": "string", "snacks": "string" } }
       ]
     }
   `;
 
   try {
     const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const response = result.response; // Removed 'await' here
     const text = response.text();
     
-    console.log("Gemini responded. extracting JSON...");
-    
-    const plan = extractJSON(text);
-    console.log(text);
-    if (!plan) {
-      throw new Error("Could not parse JSON from AI response");
-    }
+    // Parse the JSON directly
+    const plan = JSON.parse(text);
 
     res.json(plan);
-
+    console.log(res);
   } catch (err) {
-    console.error("Backend Error:", err.message);
+    console.error("Backend Error:", err);
+    
+    // Handle Safety Blocks specifically
+    if (err.response && err.response.promptFeedback && err.response.promptFeedback.blockReason) {
+        return res.status(500).json({ error: "The AI blocked the response due to safety settings." });
+    }
+
     res.status(500).json({ error: "Failed to generate plan. Please try again." });
   }
 });
 
 // --- ROUTE: Image Fallback ---
 app.post('/api/generate-image', async (req, res) => {
-  const { prompt } = req.body;
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt + " fitness gym")}`;
-  res.json({ imageUrl });
+  try {
+    const { prompt } = req.body;
+    if (!prompt) return res.status(400).json({ error: "Prompt is required" });
+    
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt + " fitness gym realistic lighting")}`;
+    res.json({ imageUrl });
+  } catch (error) {
+    console.error("Image Gen Error:", error);
+    res.status(500).json({ error: "Image generation failed" });
+  }
 });
 
-// Use process.env.PORT for deployment, or 5000 for local
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
