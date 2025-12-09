@@ -8,9 +8,7 @@ const app = express();
 // 1. CORS Configuration
 app.use(cors({ 
   origin: [
-    "https://ai-fitness-coach-app-5jr7.vercel.app/",
-    "https://project-om6h9pz9j-dhamodharan-ss-projects.vercel.app",
-    "https://ai-fitness-coach-app-frontend.vercel.app",
+    "https://project-t24b5jwc6-dhamodharan-ss-projects.vercel.app",
     "http://localhost:3000"
   ],
   methods: ["GET", "POST"],
