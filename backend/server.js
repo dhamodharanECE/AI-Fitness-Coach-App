@@ -5,47 +5,37 @@ const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@googl
 
 const app = express();
 
-// 1. CORS Configuration
+// --- DEBUG: Check if API Key is loaded ---
+if (!process.env.GOOGLE_API_KEY) {
+  console.error("CRITICAL ERROR: GOOGLE_API_KEY is missing in your .env file or Deployment Settings!");
+} else {
+  console.log("SUCCESS: GOOGLE_API_KEY loaded successfully.");
+}
+
+// 1. CORS Configuration (Allows access from ANY browser/device)
 app.use(cors({ 
-  origin: [
-    "https://ai-fitness-coach-app-5jr7.vercel.app/",
-    "https://project-om6h9pz9j-dhamodharan-ss-projects.vercel.app",
-    "https://ai-fitness-coach-app-frontend.vercel.app",
-    "http://localhost:3000"
-  ],
+  origin: "*", 
   methods: ["GET", "POST"],
-  credentials: true
+  credentials: false 
 })); 
 
 app.use(express.json());
 
-// 2. Initialize Gemini with JSON Mode and Safety Settings
+// 2. Initialize Gemini 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({ 
-  model: "gemini-2.5-flash",
-  // IMPORTANT: This forces the AI to return ONLY valid JSON, no Regex needed
+  // FIX: Changed from 'gemini-2.5-flash' (doesn't exist) to 'gemini-1.5-flash'
+  model: "gemini-2.5-flash", 
+  
   generationConfig: { 
     responseMimeType: "application/json" 
   },
-  // IMPORTANT: This prevents the AI from blocking fitness advice erroneously
   safetySettings: [
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_NONE,
-    }
+    { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+    { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE }
   ]
 });
 
@@ -55,7 +45,6 @@ app.post('/api/generate-plan', async (req, res) => {
   
   console.log(`Generating plan for: ${name} (${goal})...`);
 
-  // Optimized prompt for JSON mode
   const prompt = `
     Generate a fitness and diet plan for:
     User: ${name}, Goal: ${goal}, Level: ${level}, Diet: ${dietary}.
@@ -75,23 +64,23 @@ app.post('/api/generate-plan', async (req, res) => {
 
   try {
     const result = await model.generateContent(prompt);
-    const response = result.response; // Removed 'await' here
-    const text = response.text();
+    const response = await result.response;
+    let text = response.text();
     
-    // Parse the JSON directly
+    // SAFETY FIX: Clean the text in case AI adds markdown syntax (```json ... ```)
+    text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
     const plan = JSON.parse(text);
 
     res.json(plan);
-    console.log(res);
+    console.log("Plan generated successfully.");
   } catch (err) {
-    console.error("Backend Error:", err);
+    console.error("Backend Error Details:", err);
     
-    // Handle Safety Blocks specifically
     if (err.response && err.response.promptFeedback && err.response.promptFeedback.blockReason) {
-        return res.status(500).json({ error: "The AI blocked the response due to safety settings." });
+        return res.status(500).json({ error: "Blocked by safety settings." });
     }
-
-    res.status(500).json({ error: "Failed to generate plan. Please try again." });
+    res.status(500).json({ error: "Failed to generate plan." });
   }
 });
 
