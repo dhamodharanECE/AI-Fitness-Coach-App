@@ -290,12 +290,12 @@ Theme Config: tailwind.config.js
 Frontend Deployment Link:
 
 ```
-https://ai-fitness-coach-app-9bia.vercel.app/
+https://ai-fitness-coach-app-wl1r.vercel.app
 ```
 
 Backend Deployment Link: 
 ```
-https://ai-fitness-coach-app-project.onrender.com
+https://ai-fitness-coach-app-project-48tt.onrender.com
 ```
 
 GitHub Project Link:
