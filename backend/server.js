@@ -4,15 +4,12 @@ const cors = require('cors');
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 
 const app = express();
-
-// --- DEBUG: Check if API Key is loaded ---
 if (!process.env.GOOGLE_API_KEY) {
   console.error("CRITICAL ERROR: GOOGLE_API_KEY is missing in your .env file or Deployment Settings!");
 } else {
   console.log("SUCCESS: GOOGLE_API_KEY loaded successfully.");
 }
 
-// 1. CORS Configuration (Allows access from ANY browser/device)
 app.use(cors({ 
   origin: "*", 
   methods: ["GET", "POST"],
@@ -21,11 +18,10 @@ app.use(cors({
 
 app.use(express.json());
 
-// 2. Initialize Gemini 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const model = genAI.getGenerativeModel({ 
-  // FIX: Changed from 'gemini-2.5-flash' (doesn't exist) to 'gemini-1.5-flash'
+
   model: "gemini-2.5-flash", 
   
   generationConfig: { 
@@ -39,7 +35,7 @@ const model = genAI.getGenerativeModel({
   ]
 });
 
-// --- ROUTE: Generate Plan ---
+
 app.post('/api/generate-plan', async (req, res) => {
   const { name, goal, level, dietary } = req.body;
   
@@ -67,7 +63,6 @@ app.post('/api/generate-plan', async (req, res) => {
     const response = await result.response;
     let text = response.text();
     
-    // SAFETY FIX: Clean the text in case AI adds markdown syntax (```json ... ```)
     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
     const plan = JSON.parse(text);
@@ -84,7 +79,6 @@ app.post('/api/generate-plan', async (req, res) => {
   }
 });
 
-// --- ROUTE: Image Fallback ---
 app.post('/api/generate-image', async (req, res) => {
   try {
     const { prompt } = req.body;
