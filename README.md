@@ -1,7 +1,6 @@
 # 🏋️‍♂️ AI Fitness Coach
 
 An AI-powered web application that generates fully personalized workout routines and diet plans based on user goals, body 
-
 type, and dietary preferences. Powered by **Google Gemini AI** for intelligence and **Pollinations.ai** for visual generation.
 
 # 🚀 Features
